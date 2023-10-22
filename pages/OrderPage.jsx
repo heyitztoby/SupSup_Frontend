@@ -23,22 +23,21 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import OrderHeader from "../components/header/OrderHeader";
 
 const OrderPage = ({ props }) => {
-  LogBox.ignoreLogs([
-    "Non-serializable values were found in the navigation state",
-  ]);
+  // LogBox.ignoreLogs([
+  //   "Non-serializable values were found in the navigation state",
+  // ]);
   StatusBar.setBarStyle("dark-content", true);
   const deliveryFee = props.route.params.deliveryFee;
   const storeID = props.route.params.storeID;
   const storeName = props.route.params.storeName;
 
-  const [basketItems, setBasketItems] = useState([]);
+  const [basketItems, setBasketItems] = useState([{ Name: "Default" }]);
   const [accumulatedAmt, setAccumulatedAmt] = useState(0);
+  const [totalPrice, setTotalPrice] = useState(0);
   const [orders, setOrders] = useState(new Map());
   const [allFoods, setAllFoods] = useState([
     ...props.route.params.props.values(),
   ]);
-
-  console.log("ALL FOODS: ", allFoods);
 
   let orderMap = new Map();
 
@@ -59,7 +58,7 @@ const OrderPage = ({ props }) => {
     let amt = 0;
     setAccumulatedAmt(0);
 
-    if (basketItems && basketItems.length > 0) {
+    if (basketItems) {
       basketItems.forEach((item) => {
         let qty = item.Quantity;
         let name = item.Name;
@@ -82,8 +81,15 @@ const OrderPage = ({ props }) => {
           });
         }
       });
+
       setAccumulatedAmt(amt.toFixed(2));
+      amt += parseFloat(deliveryFee);
+      setTotalPrice(amt.toFixed(2));
       setOrders(orderMap);
+    }
+
+    if (basketItems.length === 0) {
+      props.navigation.goBack();
     }
 
     return focusListener;
@@ -188,25 +194,77 @@ const OrderPage = ({ props }) => {
     );
   };
 
+  const SubtotalContainer = () => {
+    return (
+      <View
+        style={{
+          flexDirection: "row",
+          justifyContent: "space-between",
+          padding: 10,
+          marginTop: 20,
+        }}
+      >
+        <Text style={{ fontSize: SIZES.medium, fontWeight: "600" }}>
+          Subtotal
+        </Text>
+        <Text style={{ fontSize: SIZES.medium }}>S${accumulatedAmt}</Text>
+      </View>
+    );
+  };
+
+  const DeliveryFeeContainer = () => {
+    return (
+      <View
+        style={{
+          flexDirection: "row",
+          justifyContent: "space-between",
+          padding: 10,
+        }}
+      >
+        <Text style={{ fontSize: SIZES.medium, fontWeight: "600" }}>
+          Delivery Fee
+        </Text>
+        <Text style={{ fontSize: SIZES.medium }}>S${deliveryFee}</Text>
+      </View>
+    );
+  };
+
   return (
     <View style={{ flex: 1 }}>
       <OrderHeader storeName={storeName} props={props} />
       <ScrollView>
         <Text style={styles.title}>List of orders:</Text>
         <FoodDetailContainer />
+        <SubtotalContainer />
+        <DeliveryFeeContainer />
       </ScrollView>
       <View
         style={{
           backgroundColor: COLORS.white,
-          height: "12%",
-          alignItems: "center",
-          justifyContent: "center",
+          height: "20%",
+          // alignItems: "center",
+          justifyContent: "space-evenly",
         }}
       >
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "space-between",
+            padding: 10,
+            top: -15,
+          }}
+        >
+          <Text style={{ fontSize: SIZES.large, fontWeight: "600" }}>
+            Total
+          </Text>
+          <Text style={{ fontSize: SIZES.large, fontWeight: "600" }}>
+            S${totalPrice}
+          </Text>
+        </View>
         <TouchableOpacity
           style={{
             backgroundColor: "black",
-            height: "50%",
+            height: "35%",
             width: "90%",
             borderRadius: SIZES.medium,
             alignItems: "center",
@@ -214,6 +272,8 @@ const OrderPage = ({ props }) => {
             alignItems: "center",
             flexDirection: "row",
             padding: 15,
+            alignSelf: "center",
+            bottom: 15,
           }}
           // onPress={() =>
           //   handleOrderButtonPress(storeDetails._id, deliveryFee)
@@ -226,7 +286,7 @@ const OrderPage = ({ props }) => {
               fontSize: SIZES.medium,
             }}
           >
-            Pay Now - S${accumulatedAmt}
+            Pay Now
           </Text>
         </TouchableOpacity>
       </View>
@@ -241,7 +301,7 @@ const styles = StyleSheet.create({
     fontSize: SIZES.medium,
   },
   foodName: {
-    fontWeight: "bold",
+    fontWeight: "600",
     fontSize: SIZES.medium,
   },
   qty: {

@@ -4,7 +4,7 @@ import { COLORS, SIZES, SHADOWS } from "../../../constants/theme";
 
 import plusButton from "../../../assets/plusbutton.png";
 
-const NormalFoodCard = ({ food, selectedFood, handleCardPress }) => {
+const NormalFoodCard = ({ food, selectedFood, handleCardPress, quantity }) => {
   return (
     <TouchableOpacity
       style={styles.container(selectedFood, food)}
@@ -27,9 +27,16 @@ const NormalFoodCard = ({ food, selectedFood, handleCardPress }) => {
         <View
           style={{ flexDirection: "column", justifyContent: "space-between" }}
         >
-          <Text style={styles.foodName} numberOfLines={1}>
-            {food.Name}
-          </Text>
+          {quantity && quantity > 0 ? (
+            <Text style={styles.foodName} numberOfLines={1}>
+              {food.Name} ({quantity})
+            </Text>
+          ) : (
+            <Text style={styles.foodName} numberOfLines={1}>
+              {food.Name}
+            </Text>
+          )}
+
           <Text style={styles.foodPrice} numberOfLines={1}>
             S${food.Price.toFixed(2)}
           </Text>

@@ -36,6 +36,7 @@ const StorePage = ({ props }) => {
 
   let storeDetails = props.route.params.props;
   let hashMap = new Map();
+  let ordersMap = new Map();
 
   const [basketItems, setBasketItems] = useState([]);
   const [accumulatedAmt, setAccumulatedAmt] = useState(0);
@@ -48,29 +49,30 @@ const StorePage = ({ props }) => {
       getData(storeDetails._id.toString());
     });
 
+    getBasket();
+
+    return focusListener;
+  }, [basketItems]);
+
+  const getBasket = () => {
     let amt = 0;
     let totalQty = 0;
     setAccumulatedAmt(0);
 
-    console.log("BASKET: ", basketItems);
-
     if (basketItems && basketItems.length > 0) {
-      console.log("HERE");
       basketItems.forEach((item) => {
         let qty = item.Quantity;
 
         amt += parseFloat(item.Price * qty);
         totalQty += qty;
+
+        ordersMap.set(item.FoodID, qty);
       });
+
       setAccumulatedAmt(amt.toFixed(2));
       setAccumulatedQty(totalQty);
     }
-
-    return focusListener;
-  }, [basketItems]);
-
-  console.log("AMT: ", accumulatedAmt);
-  console.log("QTY: ", accumulatedQty);
+  };
 
   const getData = async (key) => {
     try {
@@ -224,7 +226,18 @@ const StorePage = ({ props }) => {
     const storeID = storeDetails._id;
 
     const handleFoodCardPress = (food) => {
-      props.navigation.navigate("Food", { props: food });
+      props.navigation.navigate("Food", {
+        props: food,
+        quantity:
+          basketItems &&
+          basketItems.length > 0 &&
+          basketItems.filter((basketItem) => basketItem.FoodID === food._id)
+            .length > 0
+            ? basketItems.filter(
+                (basketItem) => basketItem.FoodID === food._id
+              )[0].Quantity
+            : null,
+      });
     };
 
     const {
@@ -233,7 +246,6 @@ const StorePage = ({ props }) => {
       error,
     } = useFetch("GET", `api/food/get/${storeID}`, {});
 
-    let categories;
     hashMap = new Map();
 
     useEffect(() => {
@@ -266,12 +278,28 @@ const StorePage = ({ props }) => {
                   <Text style={styles.categoryName}>{item}</Text>
                   <FlatList
                     data={hashMap.get(item)}
-                    renderItem={({ item }) => (
-                      <NormalFoodCard
-                        food={item}
-                        handleCardPress={handleFoodCardPress}
-                      />
-                    )}
+                    renderItem={({ item }) =>
+                      basketItems &&
+                      basketItems.length > 0 &&
+                      basketItems.filter(
+                        (basketItem) => basketItem.FoodID === item._id
+                      ).length > 0 ? (
+                        <NormalFoodCard
+                          food={item}
+                          handleCardPress={handleFoodCardPress}
+                          quantity={
+                            basketItems.filter(
+                              (basketItem) => basketItem.FoodID === item._id
+                            )[0].Quantity
+                          }
+                        />
+                      ) : (
+                        <NormalFoodCard
+                          food={item}
+                          handleCardPress={handleFoodCardPress}
+                        />
+                      )
+                    }
                     keyExtractor={(item) => item?._id}
                     contentContainerStyle={{
                       columnGap: SIZES.medium,
