@@ -12,24 +12,30 @@ import { useRouter } from "expo-router";
 import { COLORS, SIZES } from "../../constants/theme";
 import useFetch from "../../hook/useFetch";
 
-import PopularStoreCard from "../cards/popular/PopularStoreCard";
+import GenericStoreCard from "../cards/generic/GenericStoreCard";
+import EndButton from "../user-input/EndButton";
 
-const PopularStores = () => {
+const GenericStores = ({ props, title, api }) => {
   const router = useRouter();
 
   const {
-    data: popularStores,
+    data: genericStores,
     isLoading,
     error,
-  } = useFetch("GET", "api/store/getAll", {});
+  } = useFetch("GET", `api/${api}/getAll`, {});
+
+  const handleGenericCardPress = (store) => {
+    // console.log(store);
+    props.navigation.navigate("Store", { props: store });
+  };
 
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.headerTitle}>Popular Stores</Text>
-        <TouchableOpacity style={styles.headerBtn}>
+        <Text style={styles.headerTitle}>{title}</Text>
+        {/* <TouchableOpacity style={styles.headerBtn}>
           <Text>Show All</Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
 
       <View style={styles.cardsContainer}>
@@ -42,11 +48,18 @@ const PopularStores = () => {
           <Text>Something went wrong.</Text>
         ) : (
           <FlatList
-            data={popularStores}
-            renderItem={({ item }) => <PopularStoreCard store={item} />}
+            data={genericStores}
+            renderItem={({ item }) => (
+              <GenericStoreCard
+                store={item}
+                handleCardPress={handleGenericCardPress}
+              />
+            )}
             keyExtractor={(item) => item?._id}
             contentContainerStyle={{ columnGap: SIZES.medium }}
             horizontal
+            showsHorizontalScrollIndicator={false}
+            ListFooterComponent={() => <EndButton />}
           />
         )}
       </View>
@@ -65,6 +78,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   headerTitle: {
+    fontWeight: "bold",
     fontSize: SIZES.large,
     color: COLORS.primary,
   },
@@ -77,4 +91,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default PopularStores;
+export default GenericStores;

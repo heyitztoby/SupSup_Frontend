@@ -1,12 +1,15 @@
 import { Stack } from "expo-router";
+import { RootSiblingParent } from "react-native-root-siblings";
 
 const Layout = () => {
   return (
-    <Stack
-      screenOptions={{
-        headerShown: false,
-      }}
-    />
+    <RootSiblingParent>
+      <Stack
+        screenOptions={{
+          headerShown: false,
+        }}
+      />
+    </RootSiblingParent>
   );
 };
 

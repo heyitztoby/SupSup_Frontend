@@ -12,7 +12,7 @@ import { useRouter } from "expo-router";
 import { COLORS, SIZES } from "../../constants/theme";
 import useFetch from "../../hook/useFetch";
 
-import NormalStoreCard from "../cards/normal/NormalStoreCard";
+import NormalStoreCard from "../cards/normal/NormalFoodCard";
 
 const AllStores = () => {
   const router = useRouter();
@@ -56,7 +56,6 @@ const AllStores = () => {
 const styles = StyleSheet.create({
   container: {
     marginTop: SIZES.medium,
-    padding: SIZES.small,
   },
   header: {
     flexDirection: "row",
@@ -65,7 +64,9 @@ const styles = StyleSheet.create({
   },
   headerTitle: {
     fontSize: SIZES.large,
+    fontWeight: "bold",
     color: COLORS.primary,
+    padding: SIZES.small,
   },
   headerBtn: {
     fontSize: SIZES.medium,

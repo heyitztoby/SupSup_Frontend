@@ -13,44 +13,45 @@ const DynamicHeader = (DATA) => {
   const [selected, setSelected] = useState("Select your location");
   const [open, setOpen] = useState(false);
 
-  // console.log("DATA: ", DATA.DATA);
-
   return (
     <Header
       backgroundImageStyle={{}}
       barStyle="default"
       centerComponent={
-        <DropDownPicker
-          placeholder="Select your location"
-          open={open}
-          value={selected}
-          items={DATA.DATA}
-          setOpen={setOpen}
-          setValue={setSelected}
-          style={{
-            backgroundColor: COLORS.white,
-            borderWidth: 1,
-            width: 150,
-          }}
-          containerStyle={{
-            borderWidth: 0,
-            width: 150,
-          }}
-          dropDownContainerStyle={{
-            borderWidth: 1,
-            borderColor: "red",
-          }}
-          labelStyle={{
-            color: "blue",
-          }}
-          listItemLabelStyle={{
-            color: "green",
-          }}
-          listItemContainer={{
-            borderWidth: 10,
-          }}
-          textStyle={{ fontSize: 12 }}
-        />
+        <View style={{ flexDirection: "row" }}>
+          <DropDownPicker
+            placeholder="Select your location"
+            open={open}
+            value={selected}
+            items={DATA.DATA}
+            setOpen={setOpen}
+            setValue={setSelected}
+            style={{
+              backgroundColor: COLORS.white,
+              borderWidth: 0.5,
+              borderColor: "grey",
+              // alignContent: "center",
+            }}
+            containerStyle={{
+              borderWidth: 0,
+              width: 170,
+            }}
+            dropDownContainerStyle={{
+              borderWidth: 1,
+              borderColor: "red",
+            }}
+            labelStyle={{
+              color: "blue",
+            }}
+            listItemLabelStyle={{
+              color: "green",
+            }}
+            listItemContainer={{
+              borderWidth: 10,
+            }}
+            textStyle={{ fontSize: 12 }}
+          />
+        </View>
       }
       centerContainerStyle={{
         alignSelf: "center",

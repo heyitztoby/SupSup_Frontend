@@ -5,7 +5,7 @@ const apiURL = "http://192.168.50.110:3000";
 
 const useFetch = (method, endpoint, query) => {
   const [data, setData] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
   const options = {
@@ -19,8 +19,6 @@ const useFetch = (method, endpoint, query) => {
   };
 
   const fetchData = async () => {
-    setIsLoading(true);
-
     try {
       const response = await axios.request(options);
       setData(response.data);
