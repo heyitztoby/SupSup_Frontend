@@ -8,10 +8,12 @@ This repository serves the front-end codes of the project, using Angular React N
 For best viewing experience, use mobile phone to view the app.
 
 1. Install Expo app on your mobile phone.
+
 Android: https://play.google.com/store/apps/details?id=host.exp.exponent&hl=en_US
+
 IOS: https://apps.apple.com/us/app/expo-go/id982107779
 
-3. Install Angular CLI on your PC.
+2. Install Angular CLI on your PC.
 
 ## How to run the program
 
