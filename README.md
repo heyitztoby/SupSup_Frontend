@@ -11,7 +11,7 @@ For best viewing experience, use mobile phone to view the app.
 Android: https://play.google.com/store/apps/details?id=host.exp.exponent&hl=en_US
 IOS: https://apps.apple.com/us/app/expo-go/id982107779
 
-2. Install Angular CLI on your PC.
+3. Install Angular CLI on your PC.
 
 ## How to run the program
 
