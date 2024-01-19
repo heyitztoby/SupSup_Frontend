@@ -20,10 +20,10 @@ IOS: https://apps.apple.com/us/app/expo-go/id982107779
 1. Download the project in zipped format.
 2. Extract the zipped file in your PC.
 3. Run the following command to install necessary dependencies:
-```sh
+```
 npm install
 ```
 4. Run the following command to run the program:
-```sh
+```
 npm run start
 ```
