@@ -68,7 +68,7 @@ const DynamicHeader = (DATA) => {
       rightComponent={
         <View style={{ flexDirection: "row" }}>
           <ScreenHeaderBtn iconUrl={menu} dimension="80%" />
-          <ScreenHeaderBtn iconUrl={menu} dimension="80%" />
+          {/* <ScreenHeaderBtn iconUrl={menu} dimension="80%" /> */}
         </View>
       }
       rightContainerStyle={{}}
